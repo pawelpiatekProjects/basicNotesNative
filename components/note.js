@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, TouchableOpacity, StyleSheet, TextInput, View, Button} from 'react-native';
+import {Text, StyleSheet, TextInput, View, Button} from 'react-native';
 import {Icon} from "react-native-elements";
 
 
@@ -12,11 +12,16 @@ export default function Note({click, note, update}) {
         setIsDetail(!isDetail);
     }
 
-    const onUpdate = () =>{
-
+    const onUpdate = (key) =>{
+        update(key, inputValue)
         console.log(inputValue)
         setIsDetail(false);
         setInputValue('');
+    }
+
+    const onDelete = (key) =>{
+        click(key);
+        setIsDetail(false);
     }
 
     const changeHandler = (val) =>{
@@ -24,7 +29,7 @@ export default function Note({click, note, update}) {
     }
 
     return (
-        <TouchableOpacity  >
+        <View  >
             <View style={styles.note}>
                 <Text style={styles.text}>{note.title}</Text>
                 <Icon name='more' color="#fff" size={30} onPress={testOnclik}/>
@@ -33,13 +38,13 @@ export default function Note({click, note, update}) {
                 <View style={styles.updateContainer}>
                     <TextInput style={styles.input} placeholder="update..." onChangeText={changeHandler}/>
                     <View style={styles.buttons}>
-                        <Button color="#ffc20e" title="Update" onPress={()=>update(note.key, inputValue)}/>
-                        <Button title="Delete" color="#ff4c4c" onPress={()=>click(note.key)}/>
+                        <Button color="#ffc20e" title="Update" onPress={()=>onUpdate(note.key)}/>
+                        <Button title="Delete" color="#ff4c4c" onPress={()=>onDelete(note.key)}/>
                     </View>
                 </View>
             ) : null}
 
-        </TouchableOpacity>
+        </View>
     )
 }
 
