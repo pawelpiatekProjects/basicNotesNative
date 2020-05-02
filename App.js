@@ -4,6 +4,9 @@ import Header from './components/header';
 import Note from './components/note';
 import AddForm from './components/addForm';
 import axios from 'axios';
+import firebase from './firebase';
+
+const db = firebase.database();
 
 export default function App() {
 
@@ -14,20 +17,34 @@ export default function App() {
     }, [])
 
     const fetch = async () => {
-        const {data} = await axios.get('https://react-native-notes-7dc69.firebaseio.com/notes.json');
-
-
-
-        const arr = Object.keys(data).map(key=>{
-            return data[key];
-        })
-        setData(arr);
+        db.ref('/notes').once('value')
+            .then(snapshot=>{
+               // Object.keys(snapshot).map(el=>console.log(el))
+                const items = snapshot.val();
+               const arr = Object.keys(items).map(el=>{
+                   return items[el];
+               })
+                setData(arr);
+               console.log(arr)
+            })
     }
 
-    const addNote = (title) => {
-        axios.post('https://react-native-notes-7dc69.firebaseio.com/notes.json',{
-            title: title
-        })
+
+    const deleteNote = (key) => {
+        console.log(key)
+       let noteRef = db.ref(`notes/${key}`);
+       noteRef.remove();
+       fetch();
+    }
+
+    //firebase
+
+    const addNoteFire = (title) =>{
+       const key = db.ref().child('notes').push().key;
+       db.ref(`notes/${key}`).set({
+           key: key,
+           title: title
+       })
         fetch();
     }
 
@@ -36,11 +53,14 @@ export default function App() {
         <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
             <View style={styles.container}>
                 <Header/>
-                <AddForm add={addNote}/>
+                <AddForm add={addNoteFire}/>
                 <View style={styles.content}>
                     {data.map(el => {
                         if (el != null) {
-                            return <Note text={el.title}/>
+                            return <Note
+                                click={deleteNote}
+                                note={el}
+                            />
                         }
                     })}
                 </View>
