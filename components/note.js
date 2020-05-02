@@ -11,6 +11,12 @@ export default function Note({text}) {
 
 const styles = StyleSheet.create({
     note:{
-        color: '#fff'
+        color: '#fff',
+        backgroundColor: '#ffc20e',
+        textAlign: 'center',
+        marginTop: 20,
+        marginHorizontal: 30,
+        padding: 10,
+        fontSize: 20
     }
 })
