@@ -48,6 +48,16 @@ export default function App() {
         fetch();
     }
 
+    const updateNote = (key, title) =>{
+
+        db.ref(`notes/${key}`).update({
+            title: title
+        })
+
+        fetch();
+
+    }
+
     //todo: add scroll to content
     return (
         <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
@@ -58,6 +68,7 @@ export default function App() {
                     {data.map(el => {
                         if (el != null) {
                             return <Note
+                                update={updateNote}
                                 click={deleteNote}
                                 note={el}
                             />

@@ -3,7 +3,7 @@ import {Text, TouchableOpacity, StyleSheet, TextInput, View, Button} from 'react
 import {Icon} from "react-native-elements";
 
 
-export default function Note({click, note}) {
+export default function Note({click, note, update}) {
 
     const [isDetail, setIsDetail] = useState(false);
     const [inputValue, setInputValue] = useState('');
@@ -13,6 +13,7 @@ export default function Note({click, note}) {
     }
 
     const onUpdate = () =>{
+
         console.log(inputValue)
         setIsDetail(false);
         setInputValue('');
@@ -32,7 +33,7 @@ export default function Note({click, note}) {
                 <View style={styles.updateContainer}>
                     <TextInput style={styles.input} placeholder="update..." onChangeText={changeHandler}/>
                     <View style={styles.buttons}>
-                        <Button color="#ffc20e" title="Update" onPress={onUpdate}/>
+                        <Button color="#ffc20e" title="Update" onPress={()=>update(note.key, inputValue)}/>
                         <Button title="Delete" color="#ff4c4c" onPress={()=>click(note.key)}/>
                     </View>
                 </View>
