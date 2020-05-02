@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import Header from './components/header';
+import Note from './components/note';
 import axios from 'axios';
 
 export default function App() {
@@ -25,7 +26,7 @@ export default function App() {
       <View style={styles.content}>
         {data.map(el=>{
           if(el!=null){
-            return <Text>{el.title}</Text>
+            return <Note text={el.title}/>
           }
         })}
       </View>
