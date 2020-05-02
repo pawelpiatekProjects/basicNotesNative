@@ -1,10 +1,34 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
+import Header from './components/header';
+import axios from 'axios';
 
 export default function App() {
+
+  const [data, setData] = useState([]);
+  useEffect(()=>{
+    const fetch = async ()=>{
+      const {data} = await axios.get('https://react-native-notes-7dc69.firebaseio.com/notes.json');
+
+      // console.log(data)
+
+      data.map(el=>{
+        console.log(el)
+      })
+      setData(data);
+    }
+    fetch();
+  },[])
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      {/*<Header/>*/}
+      <View style={styles.content}>
+        {data.map(el=>{
+          if(el!=null){
+            return <Text>{el.title}</Text>
+          }
+        })}
+      </View>
     </View>
   );
 }
@@ -12,8 +36,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#333',
   },
+  content: {
+    marginTop:150
+  }
 });
